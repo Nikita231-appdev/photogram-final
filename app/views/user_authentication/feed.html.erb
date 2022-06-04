@@ -1,0 +1,97 @@
+<h1><%= @friend.username %></h1>
+
+<dl>
+  <dt>Private</dt>
+  <dd><% if @friend.private == true %>
+              true
+              <% else %>
+              false
+              <% end %></dd>
+
+  <dt>Followers</dt>
+  <dd><%= following_page = FollowRequest.where({ :recipient_id => @friend.id }).count%></dd>
+
+  <dt>Following</dt>
+  <dd><%= following_page = FollowRequest.where({ :sender_id => @friend.id }).count%></dd>
+</dl>
+
+<nav>
+  <ul>
+
+    <li>
+      <a href="/users/<%= @friend.username %>">Profile</a>
+    </li>
+
+    <li>
+      <a href="/users/<%= @friend.username %>/liked_photos">Liked photos</a>
+    </li>
+
+    <li>
+      <a href="/users/<%= @friend.username %>/feed">Feed</a>
+    </li>
+    
+    <li>
+      <a href="/users/<%= @friend.username %>/discover">Discover</a>
+    </li>
+  </ul>
+</nav>
+
+<h2>Feed (<%= @photo_bomb.count %>)</h2>
+
+<table border="1">
+
+<% @photo_bomb.each do |mate|%>
+  <tr>
+    <th>
+      Image
+    </th>
+
+    <th>
+      Owner
+    </th>
+
+    <th>
+      Caption
+    </th>
+
+    <th>
+      Posted
+    </th>
+
+    <th>
+      Likes
+    </th>
+
+    <th></th>
+  </tr>
+ 
+  <tr>
+    <td>
+      <img src="https://robohash.org/<%= mate.image %>">
+    </td>
+
+    <td>
+      <%= mate.owner.username %>
+    </td>
+
+    <td>
+       <%= mate.caption %>
+    </td>
+
+    <td>
+       <%= time_ago_in_words mate.created_at %> ago
+    </td>
+
+    <td>
+      <%= mate.likes_count%>
+    </td>
+
+    <td>
+      <a href="/photos/<%= mate.id %>">
+        Show details
+      </a>
+    </td>
+  </tr>
+<% end %>
+
+</table>

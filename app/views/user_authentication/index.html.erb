@@ -1,0 +1,52 @@
+<h1>List of users</h1>
+
+<table border="1">
+  <tr>
+    <th>
+      Username
+    </th>
+
+    <th>
+      Private?
+    </th>
+
+    <th></th>
+    <th></th>
+    
+  </tr>
+    <% @list_of_users.each do |information|%>
+    <tr>
+      <td>
+        <%= information.username %>
+      </td>
+
+      <td>
+          <%= if information.private == false 
+          p "no"
+          else 
+          p "yes" 
+          end %>
+      </td>
+
+      <td>
+      <form action="/insert_follow_request" method="post">
+
+              <input type="hidden" name="query_recipient_id" value="<%= @current_user%>">
+              <input type="hidden" name="query_sender_id" value="<%= @current_user%>">
+              <input type="hidden" name="query_status" value="<%= @current_user%>">
+
+              <% if @current_user != nil %>
+              <button>
+                Follow
+              </button>
+              <% else %>
+              <% end %>
+            </form>
+      </td>
+
+      <td>
+        <a href="/users/<%= information.username %>">Show details</a>
+      </td>
+    </tr>
+    <% end %>
+    </table>

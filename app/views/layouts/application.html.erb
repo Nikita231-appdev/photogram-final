@@ -15,6 +15,41 @@
   </head>
 
   <body>
+  <ul>
+  <li>
+  <a href="/users">All users</a>
+  </li>
+
+  <li>
+  <a href="/photos">All public photos</a>
+  </li>
+
+<% if @current_user == nil %>
+  <li>
+  <a href="/user_sign_up">Sign up</a>
+  </li>  
+
+  <li>
+  <a href="/user_sign_in">Sign in</a>
+  </li>
+
+  <% else %>
+
+  <li>
+  <a href="users/<%= @current_user %>"><%= @current_user.username %></a>
+
+  <li>
+  <a href="/user_sign_out">Sign out</a>
+  </li>
+
+  <% end %>
+
+  </ul>
+
+<p style="color: blue"><%= notice %></p>
+
+<p style="color: orange"><%= alert %></p>
+
     <%= yield %>
   </body>
 </html>

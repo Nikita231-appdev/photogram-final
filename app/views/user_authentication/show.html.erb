@@ -1,0 +1,122 @@
+<h1><%= @friend.username %></h1>
+
+<dl>
+  <dt>Private</dt>
+  <dd> <% if @friend.private == true %>
+              true
+              <% else %>
+              false
+              <% end %></dd>
+
+  <dt>Followers</dt>
+  <dd>
+   <div> <%= following_page = FollowRequest.where({ :recipient_id => @friend.id }).count%> </div>
+   <div> <a href="/delete_follow_request">Unfollow</a></div>
+
+    </div>
+      <% if %>
+      <h4>Pending follow requests</h4>
+      <% end %>
+      
+
+      <ul>
+      </ul>
+  </dd>
+
+  <dt>Following</dt>
+
+  <dd><%= following_page = FollowRequest.where({ :sender_id => @friend.id }).count%></dd>
+
+  <dt>Edit user</dt>
+  
+  <dd>
+    <form action="/modify_user/<%= @friend.username %>" method="post">
+      <label for="browser_username">Username</label>
+      <input id="browser_username" type="text" name="query_username" placeholder="Enter a username..."
+        value="<%= @friend.username %>">
+
+      <label for="browser_private">Private?</label>
+      <input id="browser_private" type="checkbox" name="query_private" >
+
+      <button>Update user</button>
+    </form>
+  </dd>
+</dl>
+
+<nav>
+  <ul>
+    <li>
+      <a href="/users/<%= @friend.username %>">Profile</a>
+    </li>
+    <li>
+      <a href="/users/<%= @friend.username %>/liked_photos">Liked photos</a>
+    </li>
+    <li>
+      <a href="/users/<%= @friend.username %>/feed">Feed</a>
+    </li>
+    <li>
+      <a href="/users/<%=@friend.username %>/discover">Discover</a>
+    </li>
+  </ul>
+</nav>
+
+<h2>Own photos (<%= @photo.count %>)</h2>
+
+<table border="1">
+<% @photo.each do |friend|%>
+  <tr>
+    <th>
+      Image
+    </th>
+
+    <th>
+      Owner
+    </th>
+
+    <th>
+      Caption
+    </th>
+
+    <th>
+      Posted
+    </th>
+
+    <th>
+      Likes
+    </th>
+
+    <th></th>
+  </tr>
+    
+  <tr>
+    <td>
+      <img src="https://robohash.org/<%= friend.image %>">
+    </td>
+
+    <td>
+      <%= friend.owner.username %>
+    </td>
+
+    <td>
+       <%= friend.caption %>
+    </td>
+
+    <td>
+       <%= time_ago_in_words friend.created_at %> ago
+    </td>
+
+    <td>
+      <%= friend.likes_count%>
+    </td>
+
+    <td>
+      <a href="/photos/<%= friend.id %>">
+        Show details
+      </a>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+  </body>
+</html>
